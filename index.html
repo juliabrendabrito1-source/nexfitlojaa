@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NexFit</title>
+
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600&family=Roboto:wght@300;400;500&family=Lobster&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: Copperplate, Papyrus, fantasy;
+      margin: 0;
+      padding: 0;
+      margin-top: 40px;
+      background-color: white;
+      background-image: url('https://img.magnific.com/vetores-gratis/fundo-abstrato-de-formas-brancas_79603-1362.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+
+    h1 { text-align: center; }
+
+    header {
+      background-color: #DCDCDC;
+      color: #fff;
+      padding: 20px 0;
+      text-align: center;
+      font-family: 'Oswald', sans-serif;
+    }
+
+    .top-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      box-sizing: border-box;
+      background-color: #FF69B4;
+      color: #fff;
+      padding: 8px 10px;
+      text-align: center;
+      z-index: 1000;
+    }
+
+    nav {
+      background-color: #DCDCDC;
+      text-align: center;
+      padding: 10px 0;
+      font-family: 'Lobster', cursive;
+    }
+
+    nav a {
+      color: black;
+      text-decoration: none;
+      margin: 0 10px;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    nav a:hover { color: #FF69B4; }
+
+    #produtos {
+      text-align: center;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    #produtos h1 {
+      font-size: 32px;
+      font-weight: bold;
+      margin-bottom: 40px;
+    }
+
+    .produtos-container {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 40px 25px;
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+
+    .produto {
+      font-family: Arial, Helvetica, sans-serif;
+      text-align: center;
+      background-color: white;
+      padding: 15px;
+      border-radius: 10px;
+      min-width: 0;
+    }
+
+    .produto img {
+      width: 100%;
+      max-width: 300px;
+      height: 350px;
+      object-fit: cover;
+    }
+
+    .produto p:first-of-type {
+      font-size: 16px;
+      font-weight: bold;
+      margin: 12px 0 6px;
+    }
+
+    .produto p:last-of-type {
+      font-size: 15px;
+      margin: 0 0 15px;
+    }
+
+    .opcoes {
+      margin-top: 15px;
+      text-align: left;
+      max-width: 300px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .opcoes label {
+      display: block;
+      font-weight: bold;
+      font-size: 14px;
+      margin: 10px 0 5px;
+    }
+
+    .opcoes select,
+    .opcoes input {
+      width: 100%;
+      padding: 9px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 14px;
+      background-color: white;
+      box-sizing: border-box;
+    }
+
+    .quantidade { margin-top: 15px; }
+
+    .quantidade h3 {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 16px;
+      margin: 10px 0;
+    }
+
+    .numero {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 22px;
+      margin: 10px;
+    }
+
+    .produto button {
+      border: none;
+      background-color: #FF69B4;
+      color: white;
+      padding: 8px 12px;
+      margin: 3px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .produto button:hover { background-color: #ff3d9b; }
+
+    .produto .confirmar {
+      width: 90%;
+      margin-top: 8px;
+      background-color: #222;
+    }
+
+    .produto .confirmar:hover { background-color: #444; }
+
+    .resultado-produto {
+      display: none;
+      background-color: #f5f5f5;
+      border: 2px solid #FF69B4;
+      border-radius: 8px;
+      padding: 15px;
+      margin: 15px auto 0;
+      max-width: 300px;
+      text-align: left;
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.7;
+      overflow-wrap: anywhere;
+    }
+
+    section {
+      padding: 20px;
+      max-width: 1000px;
+      margin: 20px auto;
+      background-color: #DCDCDC;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      font-family: 'Roboto', sans-serif;
+    }
+
+    h2, h3 {
+      color: #222;
+      font-family: 'Oswald', sans-serif;
+    }
+
+    /* CARRINHO */
+
+    #carrinho {
+      font-family: Arial, Helvetica, sans-serif;
+      scroll-margin-top: 140px;
+    }
+
+    #carrinho h2 { text-align: center; }
+
+    .item-carrinho {
+      background-color: white;
+      padding: 15px;
+      margin: 12px 0;
+      border: 1px solid #FF69B4;
+      border-radius: 8px;
+      line-height: 1.6;
+      overflow-wrap: anywhere;
+    }
+
+    .item-carrinho p { margin: 8px 0; }
+
+    #carrinho button {
+      background-color: #FF69B4;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      margin: 5px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    #carrinho button:hover { background-color: #ff3d9b; }
+
+    #carrinho .remover { background-color: #222; }
+
+    #carrinho .remover:hover { background-color: #444; }
+
+    .total-carrinho {
+      font-size: 22px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .botoes-carrinho { text-align: center; }
+
+    #carrinho-vazio {
+      text-align: center;
+      padding: 20px;
+    }
+
+    footer {
+      background-color: #FF69B4;
+      color: #fff;
+      text-align: center;
+      padding: 15px;
+      margin-top: 20px;
+      font-family: 'Lobster', cursive;
+      font-size: 18px;
+    }
+
+    #contato input {
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+
+    @media (max-width: 900px) {
+      .produtos-container { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 600px) {
+      .produtos-container { grid-template-columns: 1fr; }
+
+      nav a {
+        margin: 0 4px;
+        font-size: 14px;
+      }
+
+      .top-bar { font-size: 12px; }
+
+      header img { margin-top: 10px; }
+    }
+  </style>
+</head>
+
+<body>
+
+<header id="inicio">
+  <br><br>
+
+  <img
+    src="https://i.imgur.com/Mo70ElZ.jpeg"
+    alt="NexFit"
+    width="900"
+    style="max-width: 100%; height: auto;"
+  >
+
+  <div class="top-bar">
+    📞 (31) 98015-6299 |
+    📧 NexFit@gmail.com |
+    📍 Santa Luzia - MG
+
+    <br><br>
+
+    <nav>
+      <a href="#inicio">Início</a> |
+      <a href="#promocoes">Promoções</a> |
+      <a href="#produtos">Produtos</a> |
+      <a href="#carrinho">🛒 Carrinho (<span id="contador-carrinho">0</span>)</a> |
+      <a href="#contato">Contato</a>
+    </nav>
+  </div>
+</header>
+
+<section id="promocoes">
+  <img
+    src="https://i.imgur.com/iPJZ7cu.jpeg"
+    alt="Promoções"
+    width="1000"
+    style="max-width: 100%; height: auto;"
+  >
+</section>
+
+<section id="produtos">
+  <h1>Produtos</h1>
+  <div class="produtos-container" id="lista-produtos"></div>
+</section>
+
+<!-- CARRINHO DE COMPRAS -->
+
+<section id="carrinho">
+  <h2>🛒 Meu Carrinho</h2>
+
+  <div id="itens-carrinho">
+    <p id="carrinho-vazio">Seu carrinho está vazio.</p>
+  </div>
+
+  <p class="total-carrinho" id="total-carrinho">Total: R$ 0,00</p>
+
+  <div class="botoes-carrinho">
+    <button type="button" onclick="finalizarCompra()">
+      Finalizar pedido pelo WhatsApp
+    </button>
+
+    <button type="button" onclick="limparCarrinho()">
+      Limpar carrinho
+    </button>
+  </div>
+</section>
+
+<!-- CONTATO -->
+
+<section id="contato">
+  <h2>Contato</h2>
+
+  <p>
+    Contato:
+    <a href="https://wa.me/5531980156299" target="_blank" rel="noopener">
+      Fale conosco
+    </a>
+  </p>
+
+  <p>
+    Endereço:
+    <a href="https://maps.app.goo.gl/DY1M2PfNSY8aA8e46" target="_blank" rel="noopener">
+      Acesse nossa localização
+    </a>
+  </p>
+
+  <p>
+    Email:
+    <a href="mailto:nexfit@gmail.com?subject=Interesse+em+produtos">
+      nexfit@gmail.com
+    </a>
+  </p>
+
+  <br>
+
+  <h2>Ouvidoria</h2>
+
+  <form id="form-ouvidoria">
+    <label for="nome-contato">Nome Completo:</label>
+    <input
+      type="text"
+      id="nome-contato"
+      name="nome"
+      placeholder="Digite seu nome"
+      required
+    >
+
+    <br><br>
+
+    <label for="email-contato">Email:</label>
+    <input
+      type="email"
+      id="email-contato"
+      name="email"
+      placeholder="Digite seu email"
+      required
+    >
+
+    <br><br>
+
+    <label for="mensagem-contato">Mensagem:</label>
+    <input
+      type="text"
+      id="mensagem-contato"
+      name="mensagem"
+      placeholder="Digite sua mensagem"
+      required
+    >
+
+    <br><br>
+
+    <button type="submit">Enviar</button>
+  </form>
+</section>
+
+<footer>
+  <p>
+    &copy; 2025 NexFit | 45.669.587/7855-40 -
+    Todos os direitos reservados.
+  </p>
+</footer>
+
+<script>
+  // CATÁLOGO DE PRODUTOS
+
+  const produtos = [
+    {
+      nome: "Oversized - Leg Day",
+      preco: 89.90,
+      imagem: "https://berzerk.com.br/cdn/shop/files/Camiseta_oversized_preta_Berzerk_Leg_Day_com_estampa_de_anjinho_e_lettering_g_tico_nas_costas.jpg?v=1791556181&width=1100",
+      alt: "Oversized Leg Day",
+      cores: ["Preto", "Branco", "Azul", "Rosa", "Cinza"]
+    },
+    {
+      nome: "Oversized - Zeus",
+      preco: 89.90,
+      imagem: "https://berzerk.com.br/cdn/shop/files/CAMISETA-OVERSIZED-BERZERK-OLYMPIA-COSTAS.jpg?v=1789001717&width=720",
+      alt: "Oversized Zeus",
+      cores: ["Preto", "Branco", "Azul", "Rosa", "Cinza"]
+    },
+    {
+      nome: "Jersey Oversized - Hello Kitty",
+      preco: 139.90,
+      imagem: "https://berzerk.com.br/cdn/shop/files/hk1.jpg?v=1788525718&width=720",
+      alt: "Jersey Hello Kitty",
+      cores: ["Preto", "Branco", "Rosa", "Vermelho"]
+    },
+    {
+      nome: "Jersey Oversized - Kuromi",
+      preco: 139.90,
+      imagem: "https://berzerk.com.br/cdn/shop/files/kuromi1.jpg?v=1788525735&width=720",
+      alt: "Jersey Kuromi",
+      cores: ["Preto", "Branco", "Rosa", "Roxo"]
+    },
+    {
+      nome: "Oversized - Dragon Biceps",
+      preco: 89.90,
+      imagem: "https://berzerk.com.br/cdn/shop/files/WhatsAppImage2026-02-03at10.57.04.jpg?v=1770303448&width=720",
+      alt: "Dragon Biceps",
+      cores: ["Preto", "Branco", "Azul", "Cinza"]
+    },
+    {
+      nome: "Oversized - Boom",
+      preco: 89.90,
+      imagem: "https://berzerk.com.br/cdn/shop/files/sailor_costas.jpg?v=1779212325&width=720",
+      alt: "Boom",
+      cores: ["Preto", "Branco", "Azul", "Rosa"]
+    },
+    {
+      nome: "Oversized - Kawaii",
+      preco: 89.90,
+      imagem: "https://berzerk.com.br/cdn/shop/files/1781553931552-dllvbg.png?v=1781553945&width=720",
+      alt: "Kawaii",
+      cores: ["Preto", "Branco", "Rosa", "Azul"]
+    },
+    {
+      nome: "Oversized - Kitsune",
+      preco: 89.90,
+      imagem: "https://berzerk.com.br/cdn/shop/files/Kitsunecostas.jpg?v=1786467574&width=720",
+      alt: "Kitsune",
+      cores: ["Preto", "Branco", "Azul", "Cinza"]
+    },
+    {
+      nome: "Oversized - Gueixa",
+      preco: 89.90,
+      imagem: "https://berzerk.com.br/cdn/shop/files/GueixaJP.jpg?v=1787140126&width=720",
+      alt: "Gueixa",
+      cores: ["Preto", "Branco", "Rosa", "Vermelho"]
+    },
+    {
+      nome: "Regata Canelada - Preta",
+      preco: 49.90,
+      imagem: "https://berzerk.com.br/cdn/shop/files/f5253e2a-9d7c-4203-a69a-c0c7f7a43a9b.png?v=1784039489&width=330",
+      alt: "Regata Preta",
+      cores: ["Preto"],
+      tamanhos: ["PP", "P", "M", "G", "GG"]
+    },
+    {
+      nome: "Regata Canelada - Branca",
+      preco: 49.90,
+      imagem: "https://berzerk.com.br/cdn/shop/files/72791d05-f43c-458a-a712-0798d3fc432f.png?v=1784039509&width=330",
+      alt: "Regata Branca",
+      cores: ["Branco"],
+      tamanhos: ["PP", "P", "M", "G", "GG"]
+    },
+    {
+      nome: "Regata Yoha",
+      preco: 79.90,
+      imagem: "https://vivayoha.com.br/cdn/shop/files/IMG_5618.jpg?v=1771713493&width=400",
+      alt: "Regata Yoha",
+      cores: ["Preto", "Branco", "Rosa"],
+      tamanhos: ["PP", "P", "M", "G", "GG"]
+    },
+    {
+      nome: "Macacão Yoha",
+      preco: 99.90,
+      imagem: "https://vivayoha.com.br/cdn/shop/files/WhatsAppImage2025-11-26at10.10.28-2.jpg?v=1764162829&width=400",
+      alt: "Macacão Yoha",
+      cores: ["Preto", "Branco", "Rosa"],
+      tamanhos: ["PP", "P", "M", "G", "GG"]
+    },
+    {
+      nome: "Macaquinho Yoha",
+      preco: 99.90,
+      imagem: "https://vivayoha.com.br/cdn/shop/files/macb4.png?v=1758285347&width=400",
+      alt: "Macaquinho Yoha",
+      cores: ["Preto", "Branco", "Rosa", "Azul"],
+      tamanhos: ["PP", "P", "M", "G", "GG"]
+    },
+    {
+      nome: "Conjunto Yoha",
+      preco: 99.90,
+      imagem: "https://vivayoha.com.br/cdn/shop/files/IMG_5564.jpg?v=1774670394&width=400",
+      alt: "Conjunto Yoha",
+      cores: ["Preto", "Branco", "Rosa", "Azul"],
+      tamanhos: ["PP", "P", "M", "G", "GG"]
+    }
+  ];
+
+  const tamanhosPadrao = ["PP", "P", "M", "G", "GG", "XG"];
+  const listaProdutos = document.getElementById("lista-produtos");
+
+  function formatarMoeda(valor) {
+    return valor.toLocaleString("pt-BR", {
+      style: "currency",
+      currency: "BRL"
+    });
+  }
+
+  // GERAR OS CARTÕES DOS PRODUTOS
+
+  produtos.forEach((produto, indice) => {
+    const card = document.createElement("div");
+    card.className = "produto";
+
+    const imagem = document.createElement("img");
+    imagem.src = produto.imagem;
+    imagem.alt = produto.alt;
+    imagem.loading = "lazy";
+
+    const nome = document.createElement("p");
+    nome.textContent = produto.nome;
+
+    const preco = document.createElement("p");
+    preco.textContent = formatarMoeda(produto.preco);
+
+    const opcoes = document.createElement("div");
+    opcoes.className = "opcoes";
+
+    const labelNome = document.createElement("label");
+    labelNome.textContent = "Nome:";
+
+    const inputNome = document.createElement("input");
+    inputNome.type = "text";
+    inputNome.className = "nome";
+    inputNome.placeholder = "Digite seu nome";
+    inputNome.autocomplete = "name";
+
+    const labelTamanho = document.createElement("label");
+    labelTamanho.textContent = "Tamanho:";
+
+    const selectTamanho = document.createElement("select");
+    selectTamanho.className = "tamanho";
+    selectTamanho.appendChild(new Option("Selecione...", ""));
+
+    (produto.tamanhos || tamanhosPadrao).forEach(tamanho => {
+      selectTamanho.appendChild(new Option(tamanho, tamanho));
+    });
+
+    const labelCor = document.createElement("label");
+    labelCor.textContent = "Cor:";
+
+    const selectCor = document.createElement("select");
+    selectCor.className = "cor";
+    selectCor.appendChild(new Option("Selecione...", ""));
+
+    produto.cores.forEach(cor => {
+      selectCor.appendChild(new Option(cor, cor));
+    });
+
+    opcoes.append(
+      labelNome, inputNome,
+      labelTamanho, selectTamanho,
+      labelCor, selectCor
+    );
+
+    const quantidade = document.createElement("div");
+    quantidade.className = "quantidade";
+
+    const tituloQuantidade = document.createElement("h3");
+    tituloQuantidade.textContent = "Quantidade";
+
+    const numero = document.createElement("h2");
+    numero.className = "numero";
+    numero.textContent = "0";
+
+    const botaoAumentar = document.createElement("button");
+    botaoAumentar.type = "button";
+    botaoAumentar.textContent = "Aumentar";
+    botaoAumentar.addEventListener("click", () => aumentar(botaoAumentar));
+
+    const botaoDiminuir = document.createElement("button");
+    botaoDiminuir.type = "button";
+    botaoDiminuir.textContent = "Diminuir";
+    botaoDiminuir.addEventListener("click", () => diminuir(botaoDiminuir));
+
+    const quebra = document.createElement("br");
+
+    const botaoConfirmar = document.createElement("button");
+    botaoConfirmar.type = "button";
+    botaoConfirmar.className = "confirmar";
+    botaoConfirmar.textContent = "Adicionar ao carrinho";
+    botaoConfirmar.addEventListener("click", () => confirmar(botaoConfirmar));
+
+    quantidade.append(
+      tituloQuantidade,
+      numero,
+      botaoAumentar,
+      botaoDiminuir,
+      quebra,
+      botaoConfirmar
+    );
+
+    const resultado = document.createElement("div");
+    resultado.className = "resultado-produto";
+    resultado.setAttribute("aria-live", "polite");
+
+    card.append(imagem, nome, preco, opcoes, quantidade, resultado);
+    listaProdutos.appendChild(card);
+  });
+
+  // QUANTIDADE
+
+  function aumentar(botao) {
+    const produto = botao.closest(".produto");
+    const numero = produto.querySelector(".numero");
+
+    numero.textContent = Number(numero.textContent) + 1;
+  }
+
+  function diminuir(botao) {
+    const produto = botao.closest(".produto");
+    const numero = produto.querySelector(".numero");
+
+    const valor = Number(numero.textContent);
+
+    if (valor > 0) {
+      numero.textContent = valor - 1;
+    }
+  }
+
+  // CARRINHO
+
+  let carrinho = [];
+
+  function confirmar(botao) {
+    const card = botao.closest(".produto");
+    const indice = Array.from(listaProdutos.children).indexOf(card);
+    const produtoBase = produtos[indice];
+
+    const nomeCliente = card.querySelector(".nome").value.trim();
+    const tamanho = card.querySelector(".tamanho").value;
+    const cor = card.querySelector(".cor").value;
+    const quantidade = Number(card.querySelector(".numero").textContent);
+
+    if (!nomeCliente) {
+      alert("Por favor, digite seu nome.");
+      card.querySelector(".nome").focus();
+      return;
+    }
+
+    if (!tamanho) {
+      alert("Por favor, selecione o tamanho do produto.");
+      card.querySelector(".tamanho").focus();
+      return;
+    }
+
+    if (!cor) {
+      alert("Por favor, selecione a cor do produto.");
+      card.querySelector(".cor").focus();
+      return;
+    }
+
+    if (quantidade <= 0) {
+      alert("Insira uma quantidade antes de confirmar.");
+      return;
+    }
+
+    carrinho.push({
+      nome: produtoBase.nome,
+      cliente: nomeCliente,
+      preco: produtoBase.preco,
+      tamanho: tamanho,
+      cor: cor,
+      quantidade: quantidade
+    });
+
+    const resultado = card.querySelector(".resultado-produto");
+    resultado.replaceChildren();
+
+    const confirmacao = document.createElement("strong");
+    confirmacao.textContent = "✅ Produto adicionado ao carrinho!";
+
+    const detalhes = document.createElement("p");
+    detalhes.textContent =
+      produtoBase.nome + " — " + quantidade +
+      " unidade(s). Subtotal: " +
+      formatarMoeda(produtoBase.preco * quantidade);
+
+    resultado.append(confirmacao, detalhes);
+    resultado.style.display = "block";
+
+    atualizarCarrinho();
+
+    document.getElementById("carrinho").scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+  }
+
+  function atualizarCarrinho() {
+    const itens = document.getElementById("itens-carrinho");
+    const totalElemento = document.getElementById("total-carrinho");
+    const contador = document.getElementById("contador-carrinho");
+
+    itens.replaceChildren();
+
+    let total = 0;
+    let quantidadeTotal = 0;
+
+    if (carrinho.length === 0) {
+      const vazio = document.createElement("p");
+      vazio.id = "carrinho-vazio";
+      vazio.textContent = "Seu carrinho está vazio.";
+      itens.appendChild(vazio);
+    }
+
+    carrinho.forEach((produto, indice) => {
+      const subtotal = produto.preco * produto.quantidade;
+
+      total += subtotal;
+      quantidadeTotal += produto.quantidade;
+
+      const item = document.createElement("div");
+      item.className = "item-carrinho";
+
+      const titulo = document.createElement("strong");
+      titulo.textContent = produto.nome;
+
+      const cliente = document.createElement("p");
+      cliente.textContent = "Cliente: " + produto.cliente;
+
+      const tamanho = document.createElement("p");
+      tamanho.textContent = "Tamanho: " + produto.tamanho;
+
+      const cor = document.createElement("p");
+      cor.textContent = "Cor: " + produto.cor;
+
+      const quantidade = document.createElement("p");
+      quantidade.textContent = "Quantidade: " + produto.quantidade;
+
+      const valorUnitario = document.createElement("p");
+      valorUnitario.textContent =
+        "Valor unitário: " + formatarMoeda(produto.preco);
+
+      const valorSubtotal = document.createElement("p");
+      valorSubtotal.textContent = "Subtotal: " + formatarMoeda(subtotal);
+
+      const remover = document.createElement("button");
+      remover.type = "button";
+      remover.className = "remover";
+      remover.textContent = "Remover produto";
+
+      remover.addEventListener("click", () => {
+        carrinho.splice(indice, 1);
+        atualizarCarrinho();
+      });
+
+      item.append(
+        titulo,
+        cliente,
+        tamanho,
+        cor,
+        quantidade,
+        valorUnitario,
+        valorSubtotal,
+        remover
+      );
+
+      itens.appendChild(item);
+    });
+
+    totalElemento.textContent = "Total: " + formatarMoeda(total);
+    contador.textContent = quantidadeTotal;
+  }
+
+  function limparCarrinho() {
+    if (carrinho.length === 0) {
+      alert("O carrinho já está vazio.");
+      return;
+    }
+
+    if (confirm("Deseja remover todos os produtos do carrinho?")) {
+      carrinho = [];
+      atualizarCarrinho();
+    }
+  }
+
+  // FINALIZAR PEDIDO PELO WHATSAPP
+
+  function finalizarCompra() {
+    if (carrinho.length === 0) {
+      alert("Adicione pelo menos um produto ao carrinho.");
+      return;
+    }
+
+    let mensagem = "Olá! Quero fazer um pedido na NexFit.\n\n";
+    let total = 0;
+
+    carrinho.forEach((produto, indice) => {
+      const subtotal = produto.preco * produto.quantidade;
+      total += subtotal;
+
+      mensagem +=
+        (indice + 1) + ". " + produto.nome + "\n" +
+        "Cliente: " + produto.cliente + "\n" +
+        "Tamanho: " + produto.tamanho + "\n" +
+        "Cor: " + produto.cor + "\n" +
+        "Quantidade: " + produto.quantidade + "\n" +
+        "Valor unitário: " + formatarMoeda(produto.preco) + "\n" +
+        "Subtotal: " + formatarMoeda(subtotal) + "\n\n";
+    });
+
+    mensagem += "TOTAL DO PEDIDO: " + formatarMoeda(total);
+
+    const telefone = "5531980156299";
+    const url = "https://wa.me/" + telefone +
+      "?text=" + encodeURIComponent(mensagem);
+
+    window.open(url, "_blank", "noopener");
+  }
+
+  // FORMULÁRIO DE OUVIDORIA
+  // Demonstração local: não envia dados para um servidor.
+
+  document.getElementById("form-ouvidoria").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    alert("Mensagem registrada nesta demonstração. Para receber mensagens de verdade, é necessário conectar o formulário a um serviço de envio.");
+
+    this.reset();
+  });
+</script>
+
+</body>
+</html>
